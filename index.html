@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LifePilot AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            ✨ LifePilot AI
+        </div>
+
+        <div class="nav-links">
+            <a href="#dashboard">Dashboard</a>
+            <a href="#planner">AI Planner</a>
+            <a href="#style">Style AI</a>
+            <a href="#games">Games</a>
+            <a href="#quiz">Quiz</a>
+            <a href="#sos">SOS</a>
+        </div>
+    </nav>
+
+
+    <!-- HERO -->
+    <section class="hero" id="dashboard">
+
+        <div class="hero-content">
+            <p class="small-title">YOUR PERSONAL AI COMPANION</p>
+
+            <h1>
+                Plan your day.<br>
+                <span>Live it better.</span>
+            </h1>
+
+            <p class="hero-text">
+                LifePilot AI combines weather, planning, fashion,
+                games, quizzes and emergency assistance in one smart
+                personal dashboard.
+            </p>
+
+            <button class="primary-btn" onclick="detectLocation()">
+                📍 Detect My Location
+            </button>
+        </div>
+
+        <div class="hero-card">
+            <div class="weather-icon" id="weatherIcon">☀️</div>
+
+            <h2 id="temperature">--°C</h2>
+
+            <p id="locationName">Location not detected</p>
+
+            <div class="weather-grid">
+
+                <div>
+                    <span>💧</span>
+                    <strong id="humidity">--%</strong>
+                    <small>Humidity</small>
+                </div>
+
+                <div>
+                    <span>🌧️</span>
+                    <strong id="rainfall">-- mm</strong>
+                    <small>Rain</small>
+                </div>
+
+                <div>
+                    <span>💨</span>
+                    <strong id="wind">-- km/h</strong>
+                    <small>Wind</small>
+                </div>
+
+                <div>
+                    <span>🌡️</span>
+                    <strong id="feelsLike">--°C</strong>
+                    <small>Feels Like</small>
+                </div>
+
+            </div>
+
+            <p id="weatherMessage">
+                Click "Detect My Location" to get live weather.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- FORECAST -->
+    <section class="section">
+
+        <div class="section-heading">
+            <p class="small-title">WEATHER</p>
+            <h2>7-Day Forecast</h2>
+        </div>
+
+        <div class="forecast-container" id="forecast">
+            <p class="empty-message">
+                Detect your location to see the forecast.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- AI PLANNER -->
+    <section class="section planner-section" id="planner">
+
+        <div class="section-heading">
+            <p class="small-title">AI PRODUCTIVITY</p>
+            <h2>Your Personal AI Planner</h2>
+
+            <p>
+                Tell LifePilot what you need to accomplish today.
+                AI will create a realistic schedule with breaks,
+                meals, meetings and sleep.
+            </p>
+        </div>
+
+        <div class="planner-card">
+
+            <div class="input-group">
+                <label>📝 What do you need to do today?</label>
+
+                <textarea id="tasks" placeholder="Example:
+Study Digital Electronics for 2 hours
+Complete C++ assignment
+Go to college
+Buy groceries
+Work on project
+Gym"></textarea>
+            </div>
+
+
+            <div class="two-column">
+
+                <div class="input-group">
+                    <label>🌅 Wake-up Time</label>
+                    <input type="time" id="wakeTime" value="07:00">
+                </div>
+
+                <div class="input-group">
+                    <label>🌙 Sleep Time</label>
+                    <input type="time" id="sleepTime" value="23:00">
+                </div>
+
+            </div>
+
+
+            <div class="two-column">
+
+                <div class="input-group">
+                    <label>😴 Desired Sleep Hours</label>
+                    <input type="number" id="sleepHours" min="4" max="12" value="8">
+                </div>
+
+                <div class="input-group">
+                    <label>🍽️ Meal Preference</label>
+
+                    <select id="mealPreference">
+                        <option value="normal">Normal</option>
+                        <option value="light">Light Meals</option>
+                        <option value="high-protein">High Protein</option>
+                        <option value="vegetarian">Vegetarian</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+                <label>📅 Fixed Meetings / Events</label>
+
+                <textarea id="meetings" placeholder="Example:
+10:00 AM - College class
+3:00 PM - Team meeting
+7:00 PM - Family dinner"></textarea>
+            </div>
+
+
+            <button class="primary-btn full-btn" onclick="generatePlan()">
+                ✨ Create My AI Schedule
+            </button>
+
+        </div>
+
+
+        <div class="result-card hidden" id="planResult">
+
+            <div class="result-header">
+                <h3>🧠 Your AI-Generated Day</h3>
+            </div>
+
+            <div id="planOutput"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STYLE AI -->
+    <section class="section style-section" id="style">
+
+        <div class="section-heading">
+
+            <p class="small-title">AI FASHION ASSISTANT</p>
+
+            <h2>What Should I Wear?</h2>
+
+            <p>
+                Upload up to 4 outfit photos and let Gemini AI
+                recommend the best outfit for your mood and occasion.
+            </p>
+
+        </div>
+
+
+        <div class="style-card">
+
+            <div class="two-column">
+
+                <div class="input-group">
+                    <label>😊 Your Mood</label>
+
+                    <select id="mood">
+
+                        <option value="confident">Confident</option>
+                        <option value="happy">Happy</option>
+                        <option value="casual">Casual</option>
+                        <option value="elegant">Elegant</option>
+                        <option value="energetic">Energetic</option>
+                        <option value="relaxed">Relaxed</option>
+
+                    </select>
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>🎉 Occasion</label>
+
+                    <select id="occasion">
+
+                        <option value="college">College</option>
+                        <option value="party">Party</option>
+                        <option value="date">Date</option>
+                        <option value="formal">Formal Event</option>
+                        <option value="casual outing">Casual Outing</option>
+                        <option value="interview">Interview</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>👗 Style Preference</label>
+
+                <input type="text" id="stylePreference" placeholder="Example: classy, minimal, trendy, streetwear...">
+
+            </div>
+
+
+            <div class="upload-area">
+
+                <label for="outfitImages" class="upload-label">
+
+                    📸 Upload Outfit Photos
+
+                    <span>
+                        Select up to 4 images
+                    </span>
+
+                </label>
+
+                <input type="file" id="outfitImages" accept="image/*" multiple onchange="previewImages()">
+
+            </div>
+
+
+            <div class="image-preview" id="imagePreview"></div>
+
+
+            <button class="primary-btn full-btn" onclick="analyzeOutfit()">
+                👗 Ask AI to Choose
+            </button>
+
+        </div>
+
+
+        <div class="result-card hidden" id="outfitResult">
+
+            <h3>✨ AI Style Recommendation</h3>
+
+            <div id="outfitOutput"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GAMES -->
+    <section class="section games-section" id="games">
+
+        <div class="section-heading">
+
+            <p class="small-title">TAKE A BREAK</p>
+
+            <h2>Mini Games</h2>
+
+            <p>
+                Relax your mind with some quick games.
+            </p>
+
+        </div>
+
+
+        <div class="games-grid">
+
+            <!-- Reaction Game -->
+            <div class="game-card">
+
+                <div class="game-icon">⚡</div>
+
+                <h3>Reaction Rush</h3>
+
+                <p>Test how fast you can react.</p>
+
+                <button class="game-btn" onclick="startReactionGame()">
+                    Start
+                </button>
+
+                <div id="reactionArea" class="game-area">
+                    Click Start
+                </div>
+
+            </div>
+
+
+            <!-- Memory Game -->
+            <div class="game-card">
+
+                <div class="game-icon">🧠</div>
+
+                <h3>Memory Flash</h3>
+
+                <p>Remember the numbers.</p>
+
+                <button class="game-btn" onclick="startMemoryGame()">
+                    Start
+                </button>
+
+                <div id="memoryArea" class="game-area">
+                    Click Start
+                </div>
+
+            </div>
+
+
+            <!-- Number Hunt -->
+            <div class="game-card">
+
+                <div class="game-icon">🔢</div>
+
+                <h3>Number Hunt</h3>
+
+                <p>Find the correct number.</p>
+
+                <button class="game-btn" onclick="startNumberGame()">
+                    Start
+                </button>
+
+                <div id="numberArea" class="game-area">
+                    Click Start
+                </div>
+
+            </div>
+
+
+            <!-- Rock Paper Scissors -->
+            <div class="game-card">
+
+                <div class="game-icon">✊</div>
+
+                <h3>Rock Paper Scissors</h3>
+
+                <p>Challenge the computer.</p>
+
+                <div class="rps-buttons">
+
+                    <button onclick="playRPS('rock')">
+                        ✊
+                    </button>
+
+                    <button onclick="playRPS('paper')">
+                        ✋
+                    </button>
+
+                    <button onclick="playRPS('scissors')">
+                        ✌️
+                    </button>
+
+                </div>
+
+                <div id="rpsResult" class="game-area">
+                    Choose one
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUIZ -->
+    <section class="section quiz-section" id="quiz">
+
+        <div class="section-heading">
+
+            <p class="small-title">KNOWLEDGE CHALLENGE</p>
+
+            <h2>Infinite GK Quiz</h2>
+
+            <p>
+                Choose your level and test your knowledge.
+            </p>
+
+        </div>
+
+
+        <div class="quiz-card">
+
+            <div class="level-buttons">
+
+                <button onclick="startQuiz(1)">
+                    Level 1
+                </button>
+
+                <button onclick="startQuiz(2)">
+                    Level 2
+                </button>
+
+                <button onclick="startQuiz(3)">
+                    Level 3
+                </button>
+
+            </div>
+
+
+            <div id="quizArea">
+
+                <h3>Choose a level to start</h3>
+
+                <p>
+                    Answer correctly to increase your score.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SOS -->
+    <section class="section sos-section" id="sos">
+
+        <div class="section-heading">
+
+            <p class="small-title">EMERGENCY ASSISTANCE</p>
+
+            <h2>Emergency Helplines</h2>
+
+            <p>
+                Tap a number to call the appropriate emergency service.
+            </p>
+
+        </div>
+
+
+        <div class="sos-grid">
+
+            <a href="tel:112" class="sos-card emergency">
+                <span>🚨</span>
+                <strong>112</strong>
+                <small>National Emergency</small>
+            </a>
+
+
+            <a href="tel:100" class="sos-card">
+                <span>👮</span>
+                <strong>100</strong>
+                <small>Police</small>
+            </a>
+
+
+            <a href="tel:102" class="sos-card">
+                <span>🚑</span>
+                <strong>102</strong>
+                <small>Ambulance</small>
+            </a>
+
+
+            <a href="tel:101" class="sos-card">
+                <span>🔥</span>
+                <strong>101</strong>
+                <small>Fire</small>
+            </a>
+
+
+            <a href="tel:1930" class="sos-card">
+                <span>💻</span>
+                <strong>1930</strong>
+                <small>Cyber Crime</small>
+            </a>
+
+
+            <a href="tel:1091" class="sos-card">
+                <span>👩</span>
+                <strong>1091</strong>
+                <small>Women Helpline</small>
+            </a>
+
+
+            <a href="tel:1098" class="sos-card">
+                <span>🧒</span>
+                <strong>1098</strong>
+                <small>Child Helpline</small>
+            </a>
+
+
+            <a href="tel:1073" class="sos-card">
+                <span>🚗</span>
+                <strong>1073</strong>
+                <small>Road Accident</small>
+            </a>
+
+
+            <a href="tel:139" class="sos-card">
+                <span>🚆</span>
+                <strong>139</strong>
+                <small>Railway</small>
+            </a>
+
+
+            <a href="tel:181" class="sos-card">
+                <span>☎️</span>
+                <strong>181</strong>
+                <small>Women Support</small>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <h3>✨ LifePilot AI</h3>
+
+        <p>
+            One intelligent companion for your everyday life.
+        </p>
+
+        <p class="copyright">
+            © 2026 LifePilot AI
+        </p>
+
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+
+</html>
